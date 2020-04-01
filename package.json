@@ -9,7 +9,7 @@
     "start:prod": "cross-env NODE_ENV=production nodemon server.js",
     "ndb": "ndb server.js",
     "parcel": "parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
-    "watch:parcel": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
+    "watch:parcel": "parcel watch ./public/js/main.js --out-dir ./public/js --out-file bundle.js",
     "node-sass": "node-sass -w --source-map true public/scss/main.scss public/css/style.css --output-style expanded"
   },
   "repository": {

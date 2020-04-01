@@ -38,7 +38,7 @@
             &--left {
                 width: 2rem;
                 height: 2rem;
-                display: flex;
+                //display: flex;
                 align-items: center;
                 justify-content: center;
                 background: var(--primary);
@@ -46,9 +46,12 @@
                 margin-right: 1rem;
                 border-radius: .5rem;
                 color: var(--white);
+                display: none;
             }
 
             &--right {
+                display: none;
+
                 p {
                     margin: 0;
                 }
@@ -72,6 +75,27 @@
             label {
                 position: absolute;
             }
+        }
+    }
+
+    //&.file_upload--started {
+    & {
+        .cu-bar {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: auto;
+            margin-right: .5rem;
+        }
+
+        .box {
+            //& > * {
+            //    display: none;
+            //}
         }
     }
 }

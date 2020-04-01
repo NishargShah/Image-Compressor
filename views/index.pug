@@ -20,32 +20,35 @@ html(lang='en')
                     header
                         p Compression
                     form#uploadForm
-                        .box
-                            .box--left
-                                i.fas.fa-plus
-                            .box--right
-                                p Add or drop your files
-                                p jpg, png, gif, pdf, mov, mp3
-                            label(for="file")
-                            input(type="file" id="file" accept=".gif, .jpg, .jpeg, .png, .mp3, .mp4, .avi, .mov, .pdf" multiple)
-                            .cube_box
+                        .box_wrapper
+                            .box
+                                .box--left
+                                    i.fas.fa-plus
+                                .box--right
+                                    p Add or drop your files
+                                    p jpg, png, gif, pdf, mov, mp3
+                                label(for="file")
+                                input(type="file" id="file" accept=".gif, .jpg, .jpeg, .png, .mp3, .mp4, .avi, .mov, .pdf" multiple)
+                            .cube_wrapper
                                 .close_arrow
                                     i.fas.fa-times
-                                img(src="/img/pdf.png")
-                                p Uploading...
+                                .image_wrapper
+                                    img(src="/img/pdf.png")
+                                p.uploading Uploading...
                                 p.fileName food.pdf
-                                //- 100% empty, 0% full
-                                .cu-bar.bar-principal
-                                    .face.side-0
-                                        .growing-bar
-                                        //- .growing-bar(style='transform: translateY(100%);')
-                                    .face.side-1
-                                        .growing-bar
-                                        //- .growing-bar(style='transform: translateY(100%);')
-                                    .face.top
-                                    //- 7 full 5 empty
-                                    .face.floor
-                                    //- .face.floor(style='transform: rotateX(-90deg) translateY(0em) translateZ(-5em) rotate(180deg);')
-                                p.fileSize
+                                .cube_box
+                                    //- 100% empty, 0% full
+                                    .cu-bar.bar-principal
+                                        .face.side-0
+                                            .growing-bar
+                                            //- .growing-bar(style='transform: translateY(100%);')
+                                        .face.side-1
+                                            .growing-bar
+                                            //- .growing-bar(style='transform: translateY(100%);')
+                                        .face.top
+                                        //- 7 full 5 empty
+                                        .face.floor
+                                        //- .face.floor(style='transform: rotateX(-90deg) translateY(0em) translateZ(-5em) rotate(180deg);')
+                                p.fileSize 4.13 MB / 4.48 MB
                 script(src='/vendor/js/plugin.js')
                 script(src='/js/bundle.js')

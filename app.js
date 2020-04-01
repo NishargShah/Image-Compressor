@@ -15,6 +15,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // CONTROLLERS
 const {AppError} = require('./utils/appError');
+const {upload, resizeUserPhoto, mainController} = require('./controllers/imageController');
 
 // GLOBAL MIDDLEWARES
 app.use(cors());
@@ -35,7 +36,7 @@ app.use(xss()); // Data sanitization against XSS
 app.use(compression()); // COMPRESS RESPONSE BODY
 
 // ROUTES
-// app.get('/api/v1/uploads', require('./controllers/viewsController'));
+app.post('/api/upload', upload, resizeUserPhoto, mainController);
 app.get('/', require('./controllers/viewsController').getHomepage);
 
 // IF NO ROUTES MATCHING ABOVE THAN IT WILL DISPLAY BELOW ROUTE

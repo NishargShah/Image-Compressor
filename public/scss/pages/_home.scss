@@ -146,10 +146,37 @@
             }
         }
     }
+
+    &.drag_fired {
+        .body_wrapper {
+            .bg_art {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                filter: opacity(0.75);
+                background-color: var(--primary);
+            }
+
+            h1 {
+                z-index: 1;
+                color: var(--white);
+                position: absolute;
+                top: 35%;
+            }
+        }
+    }
 }
 
 // HIDDEN & BLOCK
 .container-fluid {
+    &:not(.drag_fired) {
+        .body_wrapper {
+            display: none;
+        }
+    }
+
     .box_wrapper {
        .cube_wrapper {
            display: none;

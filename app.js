@@ -11,7 +11,7 @@ const app = express();
 
 // SET VIEW ENGINE TO PUG & SET PAGES AS ROOT
 app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views', 'pages'));
+app.set('views', path.join(__dirname, 'views'));
 
 // CONTROLLERS
 const {AppError} = require('./utils/appError');

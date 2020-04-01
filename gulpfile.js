@@ -12,6 +12,10 @@ sass.compiler = require('node-sass');
 
 const source = [
     {
+        src: 'node_modules/@fortawesome/fontawesome-free/webfonts/**',
+        dest: 'public/vendor/webfonts/'
+    },
+    {
         src: 'node_modules/bootstrap/scss/**',
         dest: 'public/vendor/scss/'
     }
@@ -21,6 +25,7 @@ const FileSource = [
     {
         src: [
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
+            'node_modules/@fortawesome/fontawesome-free/css/all.min.css'
         ],
         concat: 'plugin.css',
         dest: 'public/vendor/css/'

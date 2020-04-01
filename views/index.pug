@@ -1,0 +1,27 @@
+doctype html
+html(lang='en')
+    block header
+        head
+            meta(charset='UTF-8')
+            meta(name='viewport' content='width=device-width, initial-scale=1.0')
+            if title
+                title Image Compression | #{title}
+            else
+                title Image Compression
+            link(rel='stylesheet' href='/vendor/css/plugin.css')
+            link(rel='stylesheet' href='/css/style.css')
+            body
+                .container-fluid(id=pageId class=`${pageClass === undefined ? '' : pageClass}`)
+                    header
+                        p Compression
+                    form
+                        .box
+                            .box--left
+                                i.fas.fa-plus
+                            .box--right
+                                p Add or drop your files
+                                p jpg, png, gif, pdf, mov, mp3
+                            label(for="file")
+                            input(type="file" id="file" accept=".gif, .jpg, .jpeg, .png, .mp3, .mp4, .avi, .mov, .pdf" multiple)
+                script(src='/vendor/js/plugin.js')
+                script(src='/js/bundle.js')

@@ -1,9 +1,0 @@
-include abstracts/_mixin
-include includes/_header
-
-body
-    .container-fluid.p-0(id=pageId class=`${pageClass === undefined ? '' : pageClass}`)
-        .container-body
-            block content
-    script(src='/vendor/js/plugin.js')
-    script(src='/js/bundle.js')

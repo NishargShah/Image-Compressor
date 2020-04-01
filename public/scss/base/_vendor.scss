@@ -1,0 +1,12 @@
+$grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px,
+        xxl: 1600px
+);
+
+@import "../../../public/vendor/scss/functions";
+@import "../../../public/vendor/scss/variables";
+@import "../../../public/vendor/scss/mixins";

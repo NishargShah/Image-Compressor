@@ -23,10 +23,13 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
     if (files.length >= 6) {
         alert('Maximum limit is 5');
     } else {
+        document.querySelector('.box_wrapper').classList.remove('file_upload--canceled');
         document.querySelector('.image_wrapper img').setAttribute('src', `/img/${chooseMimetype(mimetype)}.png`);
         document.querySelector('.uploading').innerText = 'Uploading...';
         document.querySelector('.almostDone').innerText = '';
-        document.querySelector('.side-0 .growing-bar, .side-1 .growing-bar, .floor').removeAttribute('style');
+        document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar, .floor').forEach(cur => {
+            cur.removeAttribute('style');
+        });
 
         if (files.length === 1) {
             document.querySelector('.fileName').innerText = files[0].name;
@@ -37,7 +40,7 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
             for (let [key, value] of Object.entries(files)) {
                 sumArr.push(value.size);
             }
-            sum = sumArr.reduce(function(acc, val) { return acc + val; }, 0);
+            sum = sumArr.reduce(function (acc, val) { return acc + val; }, 0);
             sum = (sum / 1024 / 1024).toFixed(2);
             document.querySelector('.totalSize').innerText = ` ${sum} MB`;
             document.querySelector('.fileName').innerText = files.length + ' files';
@@ -45,23 +48,32 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
         document.querySelector('.box_wrapper').classList.add('file_upload--started');
 
         const form = new FormData();
-        form.append('file', files[0]);
+        Array.from(files).forEach((cur) => {
+            form.append('file', cur);
+        });
 
         try {
+            const CancelToken = axios.CancelToken;
+            const source = CancelToken.source();
             const res = await axios({
                 method: 'POST',
                 url: '/api/upload',
                 data: form,
+                cancelToken: source.token,
                 onUploadProgress: progress => {
-                    const { total, loaded } = progress;
+                    if (document.querySelector('.box_wrapper').className.includes('file_upload--canceled')) {
+                        source.cancel();
+                    }
+                    const {total, loaded} = progress;
                     const totalSizeInMB = total / 1000000;
                     const loadedSizeInMB = loaded / 1000000;
                     const uploadPercentage = (loadedSizeInMB / totalSizeInMB) * 100;
                     console.log('%', uploadPercentage);
 
 
-                    document.querySelector('.side-0 .growing-bar, .side-1 .growing-bar')
-                        .setAttribute('style', `transform: translateY(${100 - uploadPercentage}%);`);
+                    document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar').forEach(cur => {
+                        cur.setAttribute('style', `transform: translateY(${100 - uploadPercentage}%);`);
+                    });
                     const above = uploadPercentage / 100 * 2 + 5;
                     document.querySelector('.floor')
                         .setAttribute('style', `transform: rotateX(-90deg) translateY(0em) translateZ(-${above}em) rotate(180deg);`);
@@ -73,6 +85,9 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
                     console.log("uploaded size in MB ==> ", loadedSizeInMB);
 
                     if (uploadPercentage === 100) {
+                        document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar, .floor').forEach(cur => {
+                            cur.removeAttribute('style');
+                        });
                         document.querySelector('.box_wrapper').classList.add('file_compress--started');
                         document.querySelector('.almostDone').innerText = 'Almost Done';
                         document.querySelector('.uploading').innerText = 'Compressing...';
@@ -81,7 +96,11 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
             });
             console.log(res);
         } catch (err) {
-            console.log(err.response.data.message);
+            if (axios.isCancel(err)) {
+                console.log('User canceled request');
+            } else {
+                console.log(err.response.data.message);
+            }
         }
     }
 });
@@ -106,7 +125,11 @@ window.addEventListener('drop', e => {
 
 // CLOSE ICON
 document.querySelector('.close_arrow').addEventListener('click', () => {
+    document.querySelector('input[type="file"]').value = '';
     document.querySelector('.box_wrapper').classList.remove('file_upload--started');
     document.querySelector('.box_wrapper').classList.remove('file_compress--started');
-    document.querySelector('input[type="file"]').value = '';
+    document.querySelector('.box_wrapper').classList.add('file_upload--canceled');
+    document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar, .floor').forEach(cur => {
+        cur.removeAttribute('style');
+    });
 });

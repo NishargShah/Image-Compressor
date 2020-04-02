@@ -28,12 +28,12 @@ html(lang='en')
                                     p Add or drop your files
                                     p jpg, png, gif, pdf, mov, mp3
                                 label(for="file")
-                                input(type="file" id="file" accept=".gif, .jpg, .jpeg, .png, .mp3, .mp4, .avi, .mov, .pdf" multiple)
+                                input(type="file" name="file" id="file" accept=".gif, .jpg, .jpeg, .png, .mp3, .mp4, .avi, .mov, .pdf" multiple)
                             .cube_wrapper
                                 .close_arrow
                                     i.fas.fa-times
                                 .image_wrapper
-                                    img(src="/img/pdf.png")
+                                    img(src="/img/jpg.png")
                                 p.uploading Uploading...
                                 p.fileName food.pdf
                                 .cube_box
@@ -49,7 +49,9 @@ html(lang='en')
                                         //- 7 full 5 empty
                                         .face.floor
                                         //- .face.floor(style='transform: rotateX(-90deg) translateY(0em) translateZ(-5em) rotate(180deg);')
-                                p.fileSize 4.13 MB / 4.48 MB
+                                p.fileSize
+                                    span.uploadSize 4.13 MB /
+                                    span.totalSize  4.48 MB
                     .body_wrapper
                         .bg_art
                         h1 Drop your file!

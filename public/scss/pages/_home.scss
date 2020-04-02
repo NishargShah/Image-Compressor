@@ -144,6 +144,27 @@
                     }
                 }
             }
+
+            &.file_compress--started {
+                .cube_box--animate {
+                    display: flex;
+                    justify-content: center;
+                    margin-right: 4.5rem;
+                    padding: 3.75rem;
+                    margin-bottom: -.5rem;
+                    transform: translateY(.75rem);
+
+                    .cube_animate {
+                        @extend %cube-animate;
+                    }
+                }
+
+                .fileSize {
+                    span:nth-child(1), span:nth-child(2) {
+                        display: none;
+                    }
+                }
+            }
         }
     }
 
@@ -178,9 +199,9 @@
     }
 
     .box_wrapper {
-       .cube_wrapper {
-           display: none;
-       }
+        .cube_wrapper {
+            display: none;
+        }
 
         &.file_upload--started {
             .box {
@@ -188,6 +209,24 @@
             }
 
             .cube_wrapper {
+                display: block;
+            }
+
+            .cube_box--animate {
+                display: none;
+            }
+        }
+
+            &.file_compress--started {
+            .box {
+                display: none;
+            }
+
+            .cube_box {
+                display: none !important;
+            }
+
+            .cube_box--animate {
                 display: block;
             }
         }

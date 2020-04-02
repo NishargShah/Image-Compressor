@@ -12,11 +12,6 @@ html(lang='en')
             link(rel='stylesheet' href='/css/style.css')
             body
                 .container-fluid(id=pageId class=`${pageClass === undefined ? '' : pageClass}`)
-                    //.cube-convert
-                    //    div.animate_cube
-                    //        div.animate_cube--1
-                    //        div.animate_cube--2
-                    //        div.animate_cube--3
                     header
                         p Compression
                     form#uploadForm
@@ -37,21 +32,23 @@ html(lang='en')
                                 p.uploading Uploading...
                                 p.fileName food.pdf
                                 .cube_box
-                                    //- 100% empty, 0% full
                                     .cu-bar.bar-principal
                                         .face.side-0
                                             .growing-bar
-                                            //- .growing-bar(style='transform: translateY(100%);')
                                         .face.side-1
                                             .growing-bar
-                                            //- .growing-bar(style='transform: translateY(100%);')
                                         .face.top
-                                        //- 7 full 5 empty
                                         .face.floor
-                                        //- .face.floor(style='transform: rotateX(-90deg) translateY(0em) translateZ(-5em) rotate(180deg);')
+                                .cube_box--animate
+                                    .cube_animate
+                                        div.animate_cube
+                                            div.animate_cube--1
+                                            div.animate_cube--2
+                                            div.animate_cube--3
                                 p.fileSize
                                     span.uploadSize 4.13 MB /
                                     span.totalSize  4.48 MB
+                                    span.almostDone
                     .body_wrapper
                         .bg_art
                         h1 Drop your file!

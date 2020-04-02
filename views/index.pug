@@ -15,7 +15,7 @@ html(lang='en')
                     header
                         p Compression
                     form#uploadForm
-                        .box_wrapper
+                        .box_wrapper.file_upload--started.file_compress--started.file_compress--finished
                             .box
                                 .box--left
                                     i.fas.fa-plus
@@ -49,6 +49,23 @@ html(lang='en')
                                     span.uploadSize 4.13 MB /
                                     span.totalSize  4.48 MB
                                     span.almostDone
+                            .download_wrapper
+                                .top_wrapper
+                                    .image_wrapper
+                                        img(src="/img/jpg.png")
+                                    .close_arrow
+                                        i.fas.fa-times
+                                .middle_wrapper
+                                    .middle_wrapper--left
+                                        p.download_fileName download.png
+                                        .download_fileSize
+                                            p.size 1 MB
+                                            i.fas.fa-arrow-right
+                                            p.compressSize 0.5 MB
+                                    .middle_wrapper--right
+                                        i.fas.fa-file-download
+                                .bottom_wrapper
+                                    button.btn(type="button") Download
                     .body_wrapper
                         .bg_art
                         h1 Drop your file!

@@ -94,20 +94,7 @@
                     }
 
                     .close_arrow {
-                        width: 2rem;
-                        height: 2rem;
-                        border-radius: 50%;
-                        background-color: #ddd;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        margin-left: auto;
-                        transform: translate(.75rem, -0.75rem);
-                        cursor: pointer;
-
-                        i {
-                            pointer-events: none;
-                        }
+                        @extend %close-arrow;
                     }
 
                     .image_wrapper {
@@ -165,6 +152,89 @@
                     }
                 }
             }
+
+            &.file_compress--finished {
+                .download_wrapper {
+                    position: relative;
+                    background-color: var(--white);
+                    border-radius: .5rem;
+                    box-shadow: 7px 8px 20px 2px rgba(0, 0, 0, 0.1);
+
+                    .top_wrapper {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 1.5rem 1.5rem 0 1.5rem;
+
+                        .close_arrow {
+                            @extend %close-arrow;
+                            transform: none;
+                        }
+
+                        .image_wrapper {
+                            text-align: center;
+                            margin-bottom: 1rem;
+
+                            img {
+                                width: 2rem;
+                            }
+                        }
+                    }
+
+                    .middle_wrapper {
+                        padding: 1rem 1.5rem;
+                        border-bottom: 1px solid #ccc;
+                        border-top: 1px solid #ccc;
+                        display: flex;
+                        align-items: center;
+
+                        &--left {
+                            .download_fileName {
+                                font-weight: 600;
+                                margin: 0;
+                            }
+
+                            .download_fileSize {
+                                display: flex;
+                                align-items: center;
+                                color: var(--secondary);
+                                font-size: .8rem;
+
+                                p {
+                                    margin: 0;
+                                }
+
+                                i {
+                                    color: var(--primary);
+                                    margin: 0 .5rem;
+                                }
+                            }
+                        }
+
+                        &--right {
+                            margin-left: auto;
+                            cursor: pointer;
+
+                            i {
+                                pointer-events: none;
+                                color: var(--primary);
+                                font-size: 1.5rem;
+                            }
+                        }
+                    }
+
+                    .bottom_wrapper {
+                        margin: 1rem 1.5rem;
+                        padding-bottom: 1.5rem;
+
+                        button {
+                            background-color: var(--primary);
+                            color: var(--white);
+                            width: 100%;
+                            padding: .75rem 6rem;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -203,6 +273,10 @@
             display: none;
         }
 
+        .download_wrapper {
+            display: none;
+        }
+
         &.file_upload--started {
             .box {
                 display: none;
@@ -215,9 +289,13 @@
             .cube_box--animate {
                 display: none;
             }
+
+            .download_wrapper {
+                display: none;
+            }
         }
 
-            &.file_compress--started {
+        &.file_compress--started {
             .box {
                 display: none;
             }
@@ -227,6 +305,24 @@
             }
 
             .cube_box--animate {
+                display: block;
+            }
+
+            .download_wrapper {
+                display: none;
+            }
+        }
+
+        &.file_compress--finished {
+            .box {
+                display: none;
+            }
+
+            .cube_wrapper {
+                display: none;
+            }
+
+            .download_wrapper {
                 display: block;
             }
         }

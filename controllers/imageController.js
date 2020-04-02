@@ -6,7 +6,6 @@ const imageminJPG = require('imagemin-mozjpeg');
 const imageminPNG = require('imagemin-pngquant');
 const imageminGIF = require('imagemin-gifsicle');
 const moment = require('moment');
-const {filterBody} = require("../utils/helper");
 const {rootPath} = require("../utils/helper");
 const {AppError, catchAsync} = require('../utils/appError');
 
@@ -21,55 +20,60 @@ const multerFileFilter = (req, file, cb) => {
 exports.upload = multer({
     storage: multer.memoryStorage(),
     fileFilter: multerFileFilter
-}).single('file');
+}).array('file', 5);
 
 exports.resizeUserPhoto = catchAsync(async(req, res, next) => {
-    if (!req.file) return next();
+    if (!req.files) return next();
 
-    const fileName = req.file.originalname.split('.').slice(0, -1).join(' ');
-    const date = moment().format('YYYYMMDD-HHmmss');
-    const mimeType = req.file.mimetype.split('/')[1];
-    req.file.filename = `${fileName}-${date}.${mimeType}`;
+    for (let [key, value] of Object.entries(req.files)) {
+        const fileName = value.originalname.split('.').slice(0, -1).join(' ');
+        const date = moment().format('YYYYMMDD-HHmmss');
+        const mimeType = value.mimetype.split('/')[1];
+        value.filename = `${fileName}-${date}.${mimeType}`;
 
-    // .gif, .jpg, .jpeg, .png, .mp3, .mp4, .avi, .mov, .pdf
-    let image;
-    if (mimeType === 'jpeg') {
-        image = await imagemin.buffer(req.file.buffer, {
-            destination: '/public/uploads/',
-            plugins: [
-                imageminJPG()
-            ]
-        });
-    } else if (mimeType === 'png') {
-        image = await imagemin.buffer(req.file.buffer, {
-            destination: '/public/uploads/',
-            plugins: [
-                imageminPNG({
-                    quality: [0.6, 0.8]
-                })
-            ]
-        });
-    } else if (mimeType === 'gif') {
-        image = await imagemin.buffer(req.file.buffer, {
-            destination: '/public/uploads/',
-            plugins: [
-                imageminGIF()
-            ]
-        });
+        let image;
+        if (mimeType === 'jpeg') {
+            image = await imagemin.buffer(value.buffer, {
+                destination: '/public/uploads/',
+                plugins: [
+                    imageminJPG()
+                ]
+            });
+        } else if (mimeType === 'png') {
+            image = await imagemin.buffer(value.buffer, {
+                destination: '/public/uploads/',
+                plugins: [
+                    imageminPNG({
+                        quality: [0.6, 0.8]
+                    })
+                ]
+            });
+        } else if (mimeType === 'gif') {
+            image = await imagemin.buffer(value.buffer, {
+                destination: '/public/uploads/',
+                plugins: [
+                    imageminGIF()
+                ]
+            });
+        }
+
+        const buff = new Buffer.from(image, 'base64');
+        value.compressSize = buff.toString().length;
+        fs.writeFileSync(path.join(rootPath, 'public', 'uploads', value.filename), buff);
     }
-
-    const buff = new Buffer.from(image, 'base64');
-    req.file.imageSize = buff.toString().length;
-    fs.writeFileSync(path.join(rootPath, 'public', 'uploads', req.file.filename), buff);
     next();
 });
 
 exports.mainController = catchAsync(async(req, res, next) => {
-    const data = filterBody(req.file, null, null, ['originalname', 'mimetype', 'size', 'filename', 'imageSize']);
-    data.beforeSize = (data.size / 1024 / 1024).toFixed(2) + ' MB';
-    data.afterSize = (data.imageSize / 1024 / 1024).toFixed(2) + ' MB';
+    for (let [key, value] of Object.entries(req.files)) {
+        delete value.buffer;
+        delete value.encoding;
+        value.size = (value.size / 1024 / 1024).toFixed(2) + ' MB';
+        value.compressSize = (value.compressSize / 1024 / 1024).toFixed(2) + ' MB';
+    }
+
     res.status(200).json({
         status: 'success',
-        data
+        data: req.files
     });
 });

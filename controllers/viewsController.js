@@ -1,5 +1,3 @@
 exports.getHomepage = (req, res) => {
-    res.status(200).render('index', {
-        // fileType: ''
-    });
+    res.status(200).render('index');
 };

@@ -16,16 +16,13 @@
             left: 50%;
             top: 50%;
             width: 6rem;
-            //width: 67px;
             height: 6rem;
-            //height: 67px;
             background: hsla(0, 0%, 86.7%, .2);
             background: -webkit-gradient(linear, left top, left bottom, from(hsla(0, 0%, 92.9%, .2)), to(hsla(0, 0%, 60%, .1)));
             background: linear-gradient(hsla(0, 0%, 92.9%, .2), hsla(0, 0%, 60%, .1));
         }
 
         &--1 {
-            //transform: rotateX(90deg) translate3d(0, 33.5px, 33.5px);
             transform: rotateX(90deg) translate3d(0, 49px, 46px);
             background: #857dff;
         }
@@ -36,7 +33,6 @@
         }
 
         &--3 {
-            //transform: rotateY(-90deg) translate3d(33.5px, 0, 33.5px);
             transform: rotateY(-90deg) translate3d(47px, 0, 49px);
             background: #675dff;
         }

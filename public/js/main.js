@@ -12,29 +12,33 @@ const chooseMimetype = mimetype => {
     return false;
 };
 
-const HTML = (object) => `
-    <div class="middle_wrapper">
-        <div class="middle_wrapper--left">
-            <p class="download_fileName">${object.originalname}</p>
-            <div class="download_fileSize">
-                <p class="size">${object.size}</p>
-                <i class="fas fa-arrow-right"></i>
-                <p class="compressSize">${object.compressSize}</p>
-            </div>
-        </div>
+const HTML = (object, isOne) => {
+    const oneHtml = isOne ? `<div class="middle_wrapper--right"></div>` :
+    `
         <div class="middle_wrapper--right">
             <a href="/uploads/${object.filename}" download><i class="fas fa-file-download"></i></a>
         </div>
-    </div>
-`;
+    `;
+    return `
+        <div class="middle_wrapper">
+            <div class="middle_wrapper--left">
+                <p class="download_fileName">${object.originalname}</p>
+                <div class="download_fileSize">
+                    <p class="size">${object.size}</p>
+                    <i class="fas fa-arrow-right"></i>
+                    <p class="compressSize">${object.compressSize}</p>
+                </div>
+            </div>
+            ${oneHtml}
+        </div>
+    `;
+};
 
 document.querySelector('#uploadForm').addEventListener('change', async e => {
-    console.log(e);
     const target = e.target;
     const files = target.files;
     const mimetype = files[0].type.split('/')[1];
     console.log(files);
-    let sum;
 
     if (files.length >= 6) {
         alert('Maximum limit is 5');
@@ -46,23 +50,10 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
         document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar, .floor').forEach(cur => {
             cur.removeAttribute('style');
         });
-
-        if (files.length === 1) {
-            document.querySelector('.fileName').innerText = files[0].name;
-            sum = (files[0].size / 1024 / 1024).toFixed(2);
-            document.querySelector('.totalSize').innerText = ` ${sum} MB'`;
-        } else {
-            let sumArr = [];
-            for (let [key, value] of Object.entries(files)) {
-                sumArr.push(value.size);
-            }
-            sum = sumArr.reduce(function (acc, val) { return acc + val; }, 0);
-            sum = (sum / 1024 / 1024).toFixed(2);
-            document.querySelector('.totalSize').innerText = ` ${sum} MB`;
-            document.querySelector('.fileName').innerText = files.length + ' files';
-        }
+        document.querySelector('.fileName').innerText = files.length === 1 ? files[0].name : files.length + ' files';
         document.querySelector('.box_wrapper').classList.add('file_upload--started');
 
+        // APPEND FORM DATA
         const form = new FormData();
         Array.from(files).forEach((cur) => {
             form.append('file', cur);
@@ -84,8 +75,6 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
                     const totalSizeInMB = total / 1000000;
                     const loadedSizeInMB = loaded / 1000000;
                     const uploadPercentage = (loadedSizeInMB / totalSizeInMB) * 100;
-                    console.log('%', uploadPercentage);
-
 
                     document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar').forEach(cur => {
                         cur.setAttribute('style', `transform: translateY(${100 - uploadPercentage}%);`);
@@ -93,12 +82,8 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
                     const above = uploadPercentage / 100 * 2 + 5;
                     document.querySelector('.floor')
                         .setAttribute('style', `transform: rotateX(-90deg) translateY(0em) translateZ(-${above}em) rotate(180deg);`);
-                    const uploaded = ((sum / 100) * uploadPercentage).toFixed(2);
-                    document.querySelector('.uploadSize').innerText = `${uploaded} MB /`;
-
-
-                    console.log("total size in MB ==> ", totalSizeInMB);
-                    console.log("uploaded size in MB ==> ", loadedSizeInMB);
+                    document.querySelector('.uploadSize').innerText = `${loadedSizeInMB.toFixed(2)} MB /`;
+                    document.querySelector('.totalSize').innerText = ` ${totalSizeInMB.toFixed(2)} MB`;
 
                     if (uploadPercentage === 100) {
                         document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar, .floor').forEach(cur => {
@@ -110,11 +95,18 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
                     }
                 }
             });
-            console.log(res);
             document.querySelector('.box_wrapper').classList.add('file_compress--finished');
 
             for (let [key, value] of Object.entries(res.data.data)) {
-                document.querySelector('.bottom_wrapper').insertAdjacentHTML('beforebegin', HTML(value));
+                const isOne = res.data.data.length === 1;
+                document.querySelector('.bottom_wrapper').insertAdjacentHTML('beforebegin', HTML(value, isOne));
+            }
+
+            if (files.length === 1) {
+                document.querySelector('.bottom_wrapper a').setAttribute('href', `/uploads/${res.data.data[0].filename}`);
+            } else {
+                document.querySelector('.bottom_wrapper a').setAttribute('href', `/uploads/${res.data.zipName}`);
+                document.querySelector('.bottom_wrapper a').innerText = 'Download All';
             }
 
         } catch (err) {
@@ -160,5 +152,8 @@ document.querySelectorAll('.close_arrow').forEach(cur => {
         document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar, .floor').forEach(cur => {
             cur.removeAttribute('style');
         });
+        if (document.querySelector('.middle_wrapper')) {
+            document.querySelector('.middle_wrapper').remove();
+        }
     })
 });

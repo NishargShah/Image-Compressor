@@ -12,12 +12,12 @@
 *.userosscache
 *.sln.docstates
 package-lock.json
-public/uploads/
-public/vendor/
-public/css/
-public/js/bundle.js
-public/js/*.min.js
+public/vendor/scss
+public/vendor/webfonts
+public/scss
+public/css/*.map
 public/js/*.map
+public/uploads/**
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

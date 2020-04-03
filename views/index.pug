@@ -22,9 +22,10 @@ html(lang='en')
                                     i.fas.fa-plus
                                 .box--right
                                     p Add or drop your files
-                                    p jpg, png, gif, pdf, mov, mp3
+                                    p jpg, jpeg, png, gif
                                 label(for="file")
-                                input(type="file" name="file" id="file" accept=".gif, .jpg, .jpeg, .png, .mp3, .mp4, .avi, .mov, .pdf" multiple)
+                                input(type="file" name="file" id="file" accept=".gif, .jpg, .jpeg, .png" multiple)
+                                p.maximum Max 5 MB and 5 Files
                             .cube_wrapper
                                 .close_arrow
                                     i.fas.fa-times
@@ -53,7 +54,7 @@ html(lang='en')
                             .download_wrapper
                                 .top_wrapper
                                     .image_wrapper
-                                        img(src="/img/jpg.png")
+                                        img(src="/img/img.png")
                                     .close_arrow
                                         i.fas.fa-times
                                 .bottom_wrapper

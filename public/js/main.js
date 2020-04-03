@@ -40,9 +40,7 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
         alert('Maximum limit is 5');
     } else {
         document.querySelector('.box_wrapper').classList.remove('file_upload--canceled');
-        document.querySelectorAll('.image_wrapper img').forEach(cur => {
-            cur.setAttribute('src', `/img/${chooseMimetype(mimetype)}.png`);
-        });
+        document.querySelector('.image_wrapper img').setAttribute('src', `/img/${chooseMimetype(mimetype)}.png`);
         document.querySelector('.uploading').innerText = 'Uploading...';
         document.querySelector('.almostDone').innerText = '';
         document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar, .floor').forEach(cur => {
@@ -107,7 +105,7 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
                             cur.removeAttribute('style');
                         });
                         document.querySelector('.box_wrapper').classList.add('file_compress--started');
-                        document.querySelector('.almostDone').innerText = 'Almost Done';
+                        document.querySelector('.almostDone').innerText = '99% Almost Done';
                         document.querySelector('.uploading').innerText = 'Compressing...';
                     }
                 }
@@ -124,6 +122,10 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
                 console.log('User canceled request');
             } else {
                 console.log(err.response.data.message);
+                if (err.response.data.message === 'File too large') {
+                    console.log('request has been canceled');
+                    document.querySelector('.close_arrow').click();
+                }
             }
         }
     }

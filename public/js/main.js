@@ -34,11 +34,10 @@ const HTML = (object, isOne) => {
     `;
 };
 
-document.querySelector('#uploadForm').addEventListener('change', async e => {
+document.querySelector('input[type="file"]').addEventListener('change', async e => {
     const target = e.target;
     const files = target.files;
     const mimetype = files[0].type.split('/')[1];
-    console.log(files);
 
     if (files.length >= 6) {
         alert('Maximum limit is 5');
@@ -136,9 +135,14 @@ window.addEventListener('dragenter', e => {
 window.addEventListener('drop', e => {
     e.preventDefault();
     document.querySelector('.container-fluid').classList.remove('drag_fired');
-    document.querySelector('.box_wrapper').classList.add('file_upload--started');
-    document.querySelector('input[type="file"]').files = e.dataTransfer.files;
-    console.log(e);
+    if (document.querySelector('.container-fluid').className.includes('drag_upload--started')) {
+        e.preventDefault();
+        document.querySelector('.container-fluid').classList.remove('drag_fired');
+    } else {
+        document.querySelector('input[type="file"]').files = e.dataTransfer.files;
+        document.querySelector('input[type="file"]').dispatchEvent(new Event('change'));
+    }
+    document.querySelector('.container-fluid').classList.add('drag_upload--started');
 });
 
 // CLOSE ICON
@@ -155,5 +159,6 @@ document.querySelectorAll('.close_arrow').forEach(cur => {
         if (document.querySelector('.middle_wrapper')) {
             document.querySelector('.middle_wrapper').remove();
         }
+        document.querySelector('.container-fluid').classList.remove('drag_upload--started');
     })
 });

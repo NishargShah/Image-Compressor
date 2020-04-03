@@ -13,11 +13,11 @@
 *.sln.docstates
 package-lock.json
 public/vendor/scss
-public/vendor/webfonts
 public/scss
 public/css/*.map
 public/js/*.map
-public/uploads/**
+public/uploads/*
+!public/uploads/img.png
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

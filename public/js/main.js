@@ -12,6 +12,22 @@ const chooseMimetype = mimetype => {
     return false;
 };
 
+const HTML = (object) => `
+    <div class="middle_wrapper">
+        <div class="middle_wrapper--left">
+            <p class="download_fileName">${object.originalname}</p>
+            <div class="download_fileSize">
+                <p class="size">${object.size}</p>
+                <i class="fas fa-arrow-right"></i>
+                <p class="compressSize">${object.compressSize}</p>
+            </div>
+        </div>
+        <div class="middle_wrapper--right">
+            <a href="/uploads/${object.filename}" download><i class="fas fa-file-download"></i></a>
+        </div>
+    </div>
+`;
+
 document.querySelector('#uploadForm').addEventListener('change', async e => {
     console.log(e);
     const target = e.target;
@@ -24,7 +40,9 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
         alert('Maximum limit is 5');
     } else {
         document.querySelector('.box_wrapper').classList.remove('file_upload--canceled');
-        document.querySelector('.image_wrapper img').setAttribute('src', `/img/${chooseMimetype(mimetype)}.png`);
+        document.querySelectorAll('.image_wrapper img').forEach(cur => {
+            cur.setAttribute('src', `/img/${chooseMimetype(mimetype)}.png`);
+        });
         document.querySelector('.uploading').innerText = 'Uploading...';
         document.querySelector('.almostDone').innerText = '';
         document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar, .floor').forEach(cur => {
@@ -95,6 +113,12 @@ document.querySelector('#uploadForm').addEventListener('change', async e => {
                 }
             });
             console.log(res);
+            document.querySelector('.box_wrapper').classList.add('file_compress--finished');
+
+            for (let [key, value] of Object.entries(res.data.data)) {
+                document.querySelector('.bottom_wrapper').insertAdjacentHTML('beforebegin', HTML(value));
+            }
+
         } catch (err) {
             if (axios.isCancel(err)) {
                 console.log('User canceled request');
@@ -124,12 +148,15 @@ window.addEventListener('drop', e => {
 });
 
 // CLOSE ICON
-document.querySelector('.close_arrow').addEventListener('click', () => {
-    document.querySelector('input[type="file"]').value = '';
-    document.querySelector('.box_wrapper').classList.remove('file_upload--started');
-    document.querySelector('.box_wrapper').classList.remove('file_compress--started');
-    document.querySelector('.box_wrapper').classList.add('file_upload--canceled');
-    document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar, .floor').forEach(cur => {
-        cur.removeAttribute('style');
-    });
+document.querySelectorAll('.close_arrow').forEach(cur => {
+    cur.addEventListener('click', () => {
+        document.querySelector('input[type="file"]').value = '';
+        document.querySelector('.box_wrapper').classList.remove('file_upload--started');
+        document.querySelector('.box_wrapper').classList.remove('file_compress--started');
+        document.querySelector('.box_wrapper').classList.remove('file_compress--finished');
+        document.querySelector('.box_wrapper').classList.add('file_upload--canceled');
+        document.querySelectorAll('.side-0 .growing-bar, .side-1 .growing-bar, .floor').forEach(cur => {
+            cur.removeAttribute('style');
+        });
+    })
 });

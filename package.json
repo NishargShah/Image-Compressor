@@ -45,13 +45,13 @@
     "pug": "^2.0.4",
     "sharp": "^0.25.2",
     "xss-clean": "^0.1.1",
-    "chalk": "^3.0.0"
+    "chalk": "^3.0.0",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.8.3",
     "cross-env": "^7.0.0",
     "del": "^5.1.0",
-    "dotenv": "^8.2.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-concat": "^2.6.1",

@@ -13,7 +13,6 @@
 *.sln.docstates
 package-lock.json
 public/vendor/scss
-public/scss
 public/css/*.map
 public/js/*.map
 public/uploads/*

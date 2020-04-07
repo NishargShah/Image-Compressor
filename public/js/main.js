@@ -8,15 +8,17 @@ const chooseMimetype = mimetype => {
         return 'png';
     } else if (mimetype === 'gif') {
         return 'gif';
+    } else if (mimetype === 'pdf') {
+        return 'pdf';
     }
-    return false;
+    return 'img';
 };
 
 const HTML = (object, isOne) => {
     const oneHtml = isOne ? `<div class="middle_wrapper--right"></div>` :
-    `
+        `
         <div class="middle_wrapper--right">
-            <a href="/uploads/${object.filename}" download><i class="fas fa-file-download"></i></a>
+            <a href="/uploads/${object.filename}" download="${object.originalname}"><i class="fas fa-file-download"></i></a>
         </div>
     `;
     return `
@@ -103,6 +105,7 @@ document.querySelector('input[type="file"]').addEventListener('change', async e 
 
             if (files.length === 1) {
                 document.querySelector('.bottom_wrapper a').setAttribute('href', `/uploads/${res.data.data[0].filename}`);
+                document.querySelector('.bottom_wrapper a').setAttribute('download', `${res.data.data[0].originalname}`);
             } else {
                 document.querySelector('.bottom_wrapper a').setAttribute('href', `/uploads/${res.data.zipName}`);
                 document.querySelector('.bottom_wrapper a').innerText = 'Download All';
@@ -113,10 +116,8 @@ document.querySelector('input[type="file"]').addEventListener('change', async e 
                 console.log('User canceled request');
             } else {
                 console.log(err.response.data.message);
-                if (err.response.data.message === 'File too large') {
-                    console.log('request has been canceled');
-                    document.querySelector('.close_arrow').click();
-                }
+                console.log('request has been canceled');
+                document.querySelector('.close_arrow').click();
             }
         }
     }

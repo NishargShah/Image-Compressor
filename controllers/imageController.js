@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 const imagemin = require('imagemin');
+const convertApi = require('convertapi')(process.env.CONVERT_API_SECRET);
 const imageminJPG = require('imagemin-mozjpeg');
 const imageminPNG = require('imagemin-pngquant');
 const imageminGIF = require('imagemin-gifsicle');
@@ -11,7 +12,7 @@ const {rootPath} = require("../utils/helper");
 const {AppError, catchAsync} = require('../utils/appError');
 
 const multerFileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/gif') {
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/gif' || file.mimetype === 'application/pdf') {
         cb(null, true);
     } else {
         cb(new AppError('Not an image! Please upload only images.', 400), false);
@@ -78,13 +79,31 @@ exports.resizeUserPhoto = catchAsync(async(req, res, next) => {
             });
         }
 
-        const buff = new Buffer.from(image, 'base64');
-        if (req.files.length !== 1) {
-            const bufferZip = Buffer.from(image);
-            archive.append(bufferZip, { name: value.originalname });
+        if (mimeType === 'jpeg' || mimeType === 'png' || mimeType === 'gif') {
+            const buff = new Buffer.from(image, 'base64');
+            if (req.files.length !== 1) {
+                const bufferZip = Buffer.from(image);
+                archive.append(bufferZip, { name: value.originalname });
+            }
+            value.compressSize = buff.toString().length;
+            fs.writeFileSync(path.join(rootPath, 'public', 'uploads', value.filename), buff);
+        } else if (mimeType === 'pdf') {
+            const buff = new Buffer.from(value.buffer, 'base64');
+            fs.writeFileSync(path.join(rootPath, 'public', 'uploads', value.filename), buff);
+
+            const result = await convertApi.convert('compress', {
+                File: path.join(rootPath, 'public', 'uploads', value.filename),
+                StoreFile: true
+            }, 'pdf');
+
+            if (req.files.length !== 1) {
+                // noinspection JSCheckFunctionSignatures
+                archive.append(fs.createReadStream(path.join(rootPath, 'public', 'uploads', value.filename)), { name: value.originalname });
+            }
+
+            value.compressSize = result.response.Files[0].FileSize;
+            await result.saveFiles(`./public/uploads/${value.filename}`);
         }
-        value.compressSize = buff.toString().length;
-        fs.writeFileSync(path.join(rootPath, 'public', 'uploads', value.filename), buff);
     }
     if (req.files.length !== 1) {
         archive.finalize();

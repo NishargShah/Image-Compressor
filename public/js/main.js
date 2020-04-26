@@ -158,7 +158,9 @@ document.querySelectorAll('.close_arrow').forEach(cur => {
             cur.removeAttribute('style');
         });
         if (document.querySelector('.middle_wrapper')) {
-            document.querySelector('.middle_wrapper').remove();
+            document.querySelectorAll('.middle_wrapper').forEach(cur => {
+                cur.remove();
+            });
         }
         document.querySelector('.container-fluid').classList.remove('drag_upload--started');
     })

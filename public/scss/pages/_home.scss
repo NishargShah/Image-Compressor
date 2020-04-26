@@ -1,6 +1,6 @@
 .container-fluid {
     background-image: url('/img/bg.jpg');
-    background-position: center;
+    background-position: 46.5%;
     background-size: cover;
     height: 100vh;
     padding: 4rem;
@@ -14,6 +14,14 @@
         color: var(--white);
         letter-spacing: 2px;
         font-size: 1.2rem;
+
+        @include media-breakpoint-down(xs) {
+            width: 100%;
+            top: 4rem;
+            left: 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
     }
 
     form {

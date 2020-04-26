@@ -45,7 +45,7 @@ body {
 }
 
 :root {
-  --primary: #675dff;
+  --primary: var(--black);
   --secondary: #a7a7a7;
   --white: #fff;
   --black: #000;
@@ -221,7 +221,7 @@ body {
 
 .container-fluid {
   background-image: url("/img/bg.jpg");
-  background-position: center;
+  background-position: 46.5%;
   background-size: cover;
   height: 100vh;
   padding: 4rem;
@@ -238,6 +238,16 @@ body {
   color: var(--white);
   letter-spacing: 2px;
   font-size: 1.2rem;
+}
+
+@media (max-width: 575.98px) {
+  .container-fluid header p {
+    width: 100%;
+    top: 4rem;
+    left: 0;
+    text-align: center;
+    font-size: 1.5rem;
+  }
 }
 
 .container-fluid form {

@@ -40,7 +40,7 @@
     "imagemin-gifsicle": "^7.0.0",
     "imagemin-mozjpeg": "^8.0.0",
     "imagemin-pngquant": "^8.0.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
@@ -59,10 +59,10 @@
     "gulp-csso": "^4.0.1",
     "gulp-plumber": "^1.2.1",
     "gulp-rename": "^2.0.0",
-    "gulp-sass": "^4.0.2",
+    "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-wait": "0.0.2",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.0",
     "parcel-bundler": "^1.12.4"
   },
   "engines": {

@@ -302,6 +302,23 @@
             }
         }
     }
+
+    .copyright {
+        color: var(--white);
+        width: 100%;
+        text-align: right;
+        margin: 0;
+
+        i {
+            color: var(--danger);
+            margin: 0 .5rem;
+        }
+
+        @include media-breakpoint-down(xs) {
+            text-align: center;
+            transform: translateY(-2rem);
+        }
+    }
 }
 
 // HIDDEN & BLOCK

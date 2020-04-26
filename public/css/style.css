@@ -516,6 +516,25 @@ body {
   top: 35%;
 }
 
+.container-fluid .copyright {
+  color: var(--white);
+  width: 100%;
+  text-align: right;
+  margin: 0;
+}
+
+.container-fluid .copyright i {
+  color: var(--danger);
+  margin: 0 .5rem;
+}
+
+@media (max-width: 575.98px) {
+  .container-fluid .copyright {
+    text-align: center;
+    transform: translateY(-2rem);
+  }
+}
+
 .container-fluid:not(.drag_fired) .body_wrapper {
   display: none;
 }
